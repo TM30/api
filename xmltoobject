@@ -1,0 +1,128 @@
+object(SimpleXMLElement)[45]
+  public 'version' => string 'Kannel bearerbox version `svn-r5138M'.
+        Build `Aug  6 2015 03:33:36', compiler `4.4.7 20120313 (Red Hat 4.4.7-4)'.
+        System Linux, release 2.6.32-431.20.3.el6.x86_64, version #1 SMP Thu Jun 19 21:14:45 UTC 2014, machine x86_64.
+        Hostname server.firstastoriavas.com, IP 209.59.165.76.
+        Libxml version 2.7.6.
+        Using OpenSSL 1.0.1e-fips 11 Feb 2013.
+        Compiled with PostgreSQL 8.4.20.
+        Using native malloc.
+    ' (length=455)
+  public 'status' => string 'running, uptime 0d 0h 4m 19s' (length=28)
+  public 'wdp' =>
+    object(SimpleXMLElement)[47]
+      public 'received' =>
+        object(SimpleXMLElement)[52]
+          public 'total' => string '0' (length=1)
+          public 'queued' => string '0' (length=1)
+      public 'sent' =>
+        object(SimpleXMLElement)[53]
+          public 'total' => string '0' (length=1)
+          public 'queued' => string '0' (length=1)
+  public 'sms' =>
+    object(SimpleXMLElement)[48]
+      public 'received' =>
+        object(SimpleXMLElement)[53]
+          public 'total' => string '2' (length=1)
+          public 'queued' => string '0' (length=1)
+      public 'sent' =>
+        object(SimpleXMLElement)[52]
+          public 'total' => string '52' (length=2)
+          public 'queued' => string '0' (length=1)
+      public 'storesize' => string '14571' (length=5)
+      public 'inbound' => string '0.02,0.01,0.01' (length=14)
+      public 'outbound' => string '0.34,0.20,0.20' (length=14)
+  public 'dlr' =>
+    object(SimpleXMLElement)[49]
+      public 'received' =>
+        object(SimpleXMLElement)[52]
+          public 'total' => string '3222' (length=4)
+      public 'sent' =>
+        object(SimpleXMLElement)[53]
+          public 'total' => string '0' (length=1)
+      public 'inbound' => string '19.92,12.44,12.44' (length=17)
+      public 'outbound' => string '0.00,0.00,0.00' (length=14)
+      public 'queued' => string '0' (length=1)
+      public 'storage' => string 'internal' (length=8)
+  public 'boxes' =>
+    object(SimpleXMLElement)[50]
+      public 'box' =>
+        array (size=2)
+          0 =>
+            object(SimpleXMLElement)[53]
+              ...
+          1 =>
+            object(SimpleXMLElement)[52]
+              ...
+  public 'smscs' =>
+    object(SimpleXMLElement)[51]
+      public 'count' => string '10' (length=2)
+      public 'smsc' =>
+        array (size=10)
+          0 =>
+            object(SimpleXMLElement)[52]
+              ...
+          1 =>
+            object(SimpleXMLElement)[53]
+              ...
+          2 =>
+            object(SimpleXMLElement)[54]
+              ...
+          3 =>
+            object(SimpleXMLElement)[55]
+              ...
+          4 =>
+            object(SimpleXMLElement)[56]
+              ...
+          5 =>
+            object(SimpleXMLElement)[57]
+              ...
+          6 =>
+            object(SimpleXMLElement)[58]
+              ...
+          7 =>
+            object(SimpleXMLElement)[59]
+              ...
+          8 =>
+            object(SimpleXMLElement)[60]
+              ...
+          9 =>
+            object(SimpleXMLElement)[61]
+              ...
+
+
+
+
+
+
+ Top Level Objects
+        Version (String)
+        Status (String)
+        wdp (Object)
+            Received (Object)
+                total (String)
+                queued (String)
+            Sent (Object)
+                total (String)
+                queued (String)
+        SMS
+            Received (Object)
+                total (String)
+                queued (String)
+            Sent (Object)
+                total (String)
+                queued (String)
+
+            storesize (String)
+            inbound (String)
+            outbound (String)
+
+        DLR
+            Received (Object)
+                total (String)
+            Sent (Object)
+                total (String)
+             storage (String)
+             inbound (String)
+             outbound (String)
+

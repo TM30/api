@@ -1,0 +1,8 @@
+simplexml_load_file(): status.xml:11: parser error : expected '&gt;' 2016-Jan-Fri 08:19:58
+
+
+RewriteEngine on
+RewriteBase /demo
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [L]

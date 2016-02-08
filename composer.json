@@ -1,0 +1,12 @@
+{
+  "autoload": {
+    "psr-4": {
+      "Data\\": "Data",
+      "Controller\\": "Controller"
+    }
+  },
+  "require": {
+   "slim/slim": "~2.0",
+    "nette/mail": "2.3.1"
+  }
+}
