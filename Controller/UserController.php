@@ -52,6 +52,16 @@ class UserController
     }
 
     /**
+     * Fetches a user using the user's email address.
+     * @param $email
+     * @return array
+     */
+    public function fetchUserByMail($email)
+    {
+        return $this->user->findBy('email' , '=' , $email);
+    }
+
+    /**
      * THis returns all user
      * @return array
      */

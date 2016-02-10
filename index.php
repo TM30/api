@@ -34,6 +34,11 @@ $app->group('/api', function() use ($app, $userController, $platformController) 
 
     $app->get('/user/:id', function($id) use ($app, $userController) {
         echo json_encode($userController->fetchUser(intval($id)));
+    })->conditions(array("id" => "[0-9]"));
+
+    $app->get('/user/:email', function($email) use ($app, $userController) {
+        $email = str_replace('%', '.', $email);
+        echo json_encode($userController->fetchUserByMail(($email))[0]->id);
     });
 
     $app->post('/user', function() use ($app, $userController) {
