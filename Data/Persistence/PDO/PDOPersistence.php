@@ -52,6 +52,7 @@ class PDOPersistence implements Persistence
 
         return $this->getResult($statement);
 
+
     }
 
     /**
@@ -187,19 +188,19 @@ class PDOPersistence implements Persistence
         if (isset(self::$pdo)) {
             return self::$pdo;
         }
-        /*return new PDOConnection(array(
+        return new PDOConnection(array(
             "host" => "localhost",
             "dataBaseName" => "api",
             "username" => "root",
             "password" => "fileopen"
-        ));*/
+        ));
 
-        return new PDOConnection(array(
+        /*return new PDOConnection(array(
             "host" => "localhost",
             "dataBaseName" => "api",
             "username" => "root2",
             "password" => "123456789"
-        ));
+        ));*/
     }
 
     public function getResult($PDOStatement)

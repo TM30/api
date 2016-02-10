@@ -111,7 +111,7 @@ class PDOQueryBuilder
         $statement = "UPDATE " . $this->table . " SET ";
         if (!empty($placeholderArray)) {
             foreach ($placeholderArray as $key => $value) {
-                $statement .= "`$key` = :{$this->funCheck($value)}, ";
+                $statement .= "`$key` = {$this->funCheck($value)}, ";
             }
             $statement = substr($statement, 0, -2);
             $this->sql = $statement;
