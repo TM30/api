@@ -59,11 +59,15 @@ $app->group('/api', function() use ($app, $userController, $platformController) 
         $role = $app->request->post('role');
         $role = intval($role);
 
-        $userController->updateUser(array(
-            "name" => $username,
-            "email" => $email,
-            "role" => $role
-        ), intval($id));
+        $fieldsToUpdate = array();
+        if($username)
+            $fieldsToUpdate['name'] = $username;
+        if($email)
+            $fieldsToUpdate['email'] = $email;
+        if($role)
+            $fieldsToUpdate['role'] = $role;
+        $userController->updateUser($fieldsToUpdate, intval($id));
+        echo json_encode("updated successfully");
     });
 
     $app->delete('/user/:id', function($id) use ($app, $userController) {
@@ -100,16 +104,22 @@ $app->group('/api', function() use ($app, $userController, $platformController) 
     $app->put("/platform/:id", function($id) use ($app, $platformController) {
         $name = $app->request->post('name');
         $name = filter_var($name, FILTER_SANITIZE_STRING);
-        $hostName = $app->request->post('host_name');
-        $hostName = filter_var($hostName, FILTER_SANITIZE_STRING);
-        $ipAddress = $app->request->post('ip_address');
-        $ipAddress = filter_var($ipAddress, FILTER_SANITIZE_STRING);
+        $host_name = $app->request->post('host_name');
+        $host_name = filter_var($host_name, FILTER_SANITIZE_STRING);
+        $ip_address = $app->request->post('ip_address');
+        $ip_address = filter_var($ip_address, FILTER_SANITIZE_STRING);
 
-        $platformController->updatePlatform(array(
-            "name" => $name,
-            "host_name" => $hostName,
-            "ip_address" => $ipAddress
-        ), intval($id));
+        $fieldsToUpdate = array();
+        if($name)
+            $fieldsToUpdate['name'] = $name;
+        if($host_name)
+            $fieldsToUpdate['host_name'] = $host_name;
+        if($ip_address)
+            $fieldsToUpdate['ip_address'] = $ip_address;
+
+        $platformController->updatePlatform($fieldsToUpdate, intval($id));
+
+        echo json_encode("updated successfully");
     });
 
     $app->delete("/platform/:id", function($id) use ($app, $platformController) {
