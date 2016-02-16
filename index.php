@@ -33,8 +33,8 @@ $app->group('/api', function() use ($app, $userController, $platformController) 
     });
 
     $app->get('/user/:id', function($id) use ($app, $userController) {
-        echo json_encode($userController->fetchUser(intval($id)));
-    })->conditions(array("id" => "[0-9]"));
+        echo json_encode($userController->fetchUser(intval($id))[0]);
+    })->conditions(array("id" => "[0-9]+"));
 
     $app->get('/user/:email', function($email) use ($app, $userController) {
         $email = str_replace('%', '.', $email);
@@ -49,10 +49,13 @@ $app->group('/api', function() use ($app, $userController, $platformController) 
         $role = $app->request->post('role');
         /*$role = intval($role);*/
 
+        $password = $app->request->post('password');
+
         $userController->createUser(array(
             "name" => $username,
             "email" => $email,
-            "role" => $role
+            "role" => $role,
+            "password" => $password
         ));
     });
 
@@ -64,6 +67,8 @@ $app->group('/api', function() use ($app, $userController, $platformController) 
         $role = $app->request->post('role');
         /*$role = intval($role);*/
 
+        $password = $app->request->post('password');
+
         $fieldsToUpdate = array();
         if($username)
             $fieldsToUpdate['name'] = $username;
@@ -71,6 +76,8 @@ $app->group('/api', function() use ($app, $userController, $platformController) 
             $fieldsToUpdate['email'] = $email;
         if($role)
             $fieldsToUpdate['role'] = $role;
+        if($password)
+            $fieldsToUpdate['password'] = $password;
         $userController->updateUser($fieldsToUpdate, intval($id));
         echo json_encode("updated successfully");
     });
@@ -88,7 +95,7 @@ $app->group('/api', function() use ($app, $userController, $platformController) 
     });
 
     $app->get("/platform/:id", function($id) use ($app, $platformController) {
-        echo json_encode($platformController->fetchPlatforms(intval($id)));
+        echo json_encode($platformController->fetchPlatforms(intval($id))[0]);
     });
 
     $app->post("/platform", function() use ($app, $platformController) {
