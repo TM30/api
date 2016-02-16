@@ -6,10 +6,12 @@ class StatusController
 {
     private $xmlObject;
     private $platformName;
+    private $portNumber;
 
-    public function __construct($platformName)
+    public function __construct($platformName, $portNumber = 8585)
     {
         $this->platformName = $platformName;
+        $this->portNumber = $portNumber;
 
         //$fileName = $platformName.".xml";
         try {
@@ -242,7 +244,7 @@ class StatusController
         //$boxesStatus = $this->getPrimaryBoxStatus();
 
         $moduleStatus = array(
-            "sevas" => $this->convertToMinuteSeconds($this->getSevassAppStatus($this->platformName), ","),
+            "sevas" => $this->convertToMinuteSeconds($this->getSevassAppStatus($this->platformName, $this->portNumber), ","),
             "sql_box" => $this->getSQLBox(),
             "sms_box" => $this->getSMSBox()
         );
@@ -298,9 +300,9 @@ class StatusController
      * This application gets Sevass Application Status
      * @return bool|mixed|string
      */
-    public static function getSevassAppStatus($platform)
+    public static function getSevassAppStatus($platform, $portNumber = 8585)
     {
-        $url = "http://{$platform}.atp-sevas.com:8585/sevas/upm";
+        $url = "http://{$platform}.atp-sevas.com:{$portNumber}/sevas/upm";
         if ($uptime = Client::makeCall($url))
             return str_replace("\n", "", $uptime);
         return 0;
