@@ -61,6 +61,11 @@ class StatusController
         );
     }
 
+    public function getGatewayUptime()
+    {
+        return (string) $this->xmlObject->status;
+    }
+
     /**
      * Returns 1 if this box is online nd 0 if it is offline
      * @return int
@@ -79,7 +84,7 @@ class StatusController
             }
         }
         if ($isLive)
-            return $isLive;
+            return $this->convertToMinuteSeconds($isLive, " ");
         return 0;
     }
 
@@ -101,7 +106,7 @@ class StatusController
             }
         }
         if ($isLive)
-            return $isLive;
+            return $this->convertToMinuteSeconds($isLive, " ");
         return 0;
     }
 
@@ -124,6 +129,7 @@ class StatusController
         return array(
             "received" => $received,
             'sent' => $sent,
+            "dlr" => $this->getDLR(),
             "storesize" => (string) $this->xmlObject->sms->storesize,
             "inbound" => (string) $this->xmlObject->sms->inbound,
             "outbound" => (string) $this->xmlObject->sms->outbound
@@ -136,11 +142,16 @@ class StatusController
      */
     public function getDLR()
     {
-        return array(
+        /*return array(
             "received" => (string) $this->xmlObject->dlr->received->total,
             'sent' => (string) $this->xmlObject->dlr->sent->total,
             "inbound" => (string) $this->xmlObject->dlr->inbound,
             "outbound" => (string) $this->xmlObject->dlr->outbound,
+            "queued" => (string) $this->xmlObject->dlr->queued
+        );*/
+        return array(
+            "received" => (string) $this->xmlObject->dlr->received->total,
+            'sent' => (string) $this->xmlObject->dlr->sent->total,
             "queued" => (string) $this->xmlObject->dlr->queued
         );
     }
@@ -231,12 +242,13 @@ class StatusController
         //$boxesStatus = $this->getPrimaryBoxStatus();
 
         $moduleStatus = array(
-            "sevas" => $this->getSevassAppStatus($this->platformName),
+            "sevas" => $this->convertToMinuteSeconds($this->getSevassAppStatus($this->platformName), ","),
             "sql_box" => $this->getSQLBox(),
             "sms_box" => $this->getSMSBox()
         );
 
         return array(
+            "gateway_uptime" => $this->getGatewayUptime(),
             "total"=>$this->getSMS(),
             "smppp_bind"=>$smscStatus,
             "modules" => $moduleStatus
@@ -290,7 +302,27 @@ class StatusController
     {
         $url = "http://{$platform}.atp-sevas.com:8585/sevas/upm";
         if ($uptime = Client::makeCall($url))
-            return $uptime;
+            return str_replace("\n", "", $uptime);
         return 0;
+    }
+
+    /**
+     * This function returns the Minute and Seconds Representation of An uptime.
+     * @param $string
+     * @return string
+     */
+    private function convertToMinuteSeconds($string, $spitWith)
+    {
+        $stringPieces = explode($spitWith, $string);
+        $lengthOfStringPieces = sizeof($stringPieces);
+        if ($lengthOfStringPieces < 4) {
+            $minutes = intval($stringPieces[1]);
+            $hoursToMinutes = intval($stringPieces[0] * 60);
+            return ($minutes+$hoursToMinutes)."m". " ".$stringPieces[2];
+        }
+        $minutes = intval($stringPieces[2]);
+        $hoursToMinutes = intval($stringPieces[1] * 60);
+        $dayToMinutes = intval($stringPieces[0] * 24 * 60);
+        return ($minutes+$hoursToMinutes+$dayToMinutes)."m". " ".$stringPieces[3];
     }
 }
