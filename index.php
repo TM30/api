@@ -47,7 +47,7 @@ $app->group('/api', function() use ($app, $userController, $platformController) 
         $email = $app->request->post('email');
         $email = filter_var($email, FILTER_SANITIZE_EMAIL);
         $role = $app->request->post('role');
-        $role = intval($role);
+        /*$role = intval($role);*/
 
         $userController->createUser(array(
             "name" => $username,
@@ -62,7 +62,7 @@ $app->group('/api', function() use ($app, $userController, $platformController) 
         $email = $app->request->post('email');
         $email = filter_var($email, FILTER_SANITIZE_EMAIL);
         $role = $app->request->post('role');
-        $role = intval($role);
+        /*$role = intval($role);*/
 
         $fieldsToUpdate = array();
         if($username)
