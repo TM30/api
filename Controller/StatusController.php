@@ -8,6 +8,23 @@ class StatusController
     private $platformName;
     private $portNumber;
 
+    private static $instances = array();
+
+    /**
+     * This returns a singleton o $this class.
+     * @param $platform
+     * @param int $portNumber
+     * @return array
+     */
+    public static function getInstance($platform, $portNumber = 8585)
+    {
+        $uniqueKInstanceRep = $platform.$portNumber;
+        if ( ! array_key_exists($uniqueKInstanceRep, self::$instances)) {
+            self::$instances[$uniqueKInstanceRep] = new self($platform, $portNumber);
+        }
+        return self::$instances[$uniqueKInstanceRep];
+    }
+
     public function __construct($platformName, $portNumber = 8585)
     {
         $this->platformName = $platformName;

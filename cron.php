@@ -1,5 +1,7 @@
 <?php
 
+require 'vendor/autoload.php';
+
 $platforms = array(
     "freesia1" => "8585",
     "freesia2" => "8585",
@@ -14,8 +16,8 @@ foreach($platforms as $key => $value) {
     $pid = pcntl_fork();
     if ( ! $pid) {
         echo 'starting child ', $i, PHP_EOL;
-        $statusController = new \Controller\StatusController($key);
-        file_put_contents("$key.json", json_encode($statusController->resolveModule("sms_c")));
+        $instance = \Controller\StatusController::getInstance($key, $value);
+        file_put_contents("$key.json", json_encode($instance->resolveModule("sms_c")));
         exit();
     }
     $i++;
@@ -24,5 +26,5 @@ foreach($platforms as $key => $value) {
 //Wait for all the subprocesses to complete to avoid zombie processes
 foreach($platforms as $key)
 {
-    pcntl_wait($status);
+    pcntl_wait($key);
 }
