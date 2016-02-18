@@ -10,7 +10,10 @@ class Client {
      */
     public static function makeCall($url)
     {
+
         $process = curl_init($url);
+
+        curl_setopt($process, CURLOPT_CONNECTTIMEOUT ,5);
         curl_setopt($process, CURLOPT_HTTPHEADER, array('Content-Type: application/text'));
         curl_setopt($process, CURLOPT_RETURNTRANSFER, TRUE);
 

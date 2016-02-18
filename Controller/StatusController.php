@@ -34,7 +34,8 @@ class StatusController
         try {
             $this->xmlObject = XMLParser::parseXMLFromFile($this->getXML($platformName));
         } catch(\Exception $e) {
-            echo json_encode($e->getMessage());
+            //Best point to Handle Connection Time Out issues for tatus
+            $this->getSMSCDown();
             exit;
         }
     }
@@ -281,7 +282,7 @@ class StatusController
      */
     private function getXML($platform)
     {
-        $url = "http://{$platform}.atp-sevas.com:13013/status.xml";
+            $url = "http://{$platform}.atp-sevas.com:13013/status.xml";
         if ($output = Client::makeCall($url)) {
             /*$file = $platform.".xml";
             $fileResource = fopen($file, "w");
@@ -332,6 +333,8 @@ class StatusController
      */
     private function convertToMinuteSeconds($string, $spitWith)
     {
+        if ($string == 0)
+            return 0;
         $stringPieces = explode($spitWith, $string);
         $lengthOfStringPieces = sizeof($stringPieces);
         if ($lengthOfStringPieces < 4) {
@@ -343,5 +346,26 @@ class StatusController
         $hoursToMinutes = intval($stringPieces[1] * 60);
         $dayToMinutes = intval($stringPieces[0] * 24 * 60);
         return ($minutes+$hoursToMinutes+$dayToMinutes)."m". " ".$stringPieces[3];
+    }
+
+    /**
+     * This function gets smsc statuses for each subscriber.
+     * @return array
+     */
+    public function getSMSCDown()
+    {
+
+        $moduleStatus = array(
+            "sevas" => $this->convertToMinuteSeconds($this->getSevassAppStatus($this->platformName, $this->portNumber), ","),
+            "sql_box" => 0,
+            "sms_box" => 0
+        );
+
+        echo json_encode(array(
+            "gateway_uptime" => 0,
+            "total"=>0,
+            "smppp_bind"=>array(),
+            "modules" => $moduleStatus
+        ));
     }
 }

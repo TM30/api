@@ -29,7 +29,13 @@ $app->group('/api', function() use ($app, $userController, $platformController) 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
     $app->get('/users', function() use ($app, $userController) {
-        echo json_encode($userController->fetchAllUsers());
+
+        if (file_exists("users.json")) {
+            echo file_get_contents('users.json');
+            return;
+        }
+        echo $data = json_encode($userController->fetchAllUsers());
+        file_put_contents('users.json', $data);
     });
 
     $app->get('/user/:id', function($id) use ($app, $userController) {
@@ -57,6 +63,8 @@ $app->group('/api', function() use ($app, $userController, $platformController) 
             "role" => $role,
             "password" => $password
         ));
+        file_put_contents('users.json', json_encode($userController->fetchAllUsers()));
+        echo json_encode(array('message'=>"User has been created  successfully.."));
     });
 
     $app->put('/user/:id', function($id) use ($app, $userController) {
@@ -79,11 +87,14 @@ $app->group('/api', function() use ($app, $userController, $platformController) 
         if($password)
             $fieldsToUpdate['password'] = $password;
         $userController->updateUser($fieldsToUpdate, intval($id));
-        echo json_encode("updated successfully");
+        file_put_contents('users.json', json_encode($userController->fetchAllUsers()));
+        echo json_encode(array('message'=>"user updated successfully.."));
     });
 
     $app->delete('/user/:id', function($id) use ($app, $userController) {
         $userController->removeUser(intval($id));
+        file_put_contents('users.json', json_encode($userController->fetchAllUsers()));
+        echo json_encode(array('message'=>"User Deleted Successfully..."));
     });
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -91,7 +102,13 @@ $app->group('/api', function() use ($app, $userController, $platformController) 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
     $app->get("/platforms", function() use ($app, $platformController) {
-        echo json_encode($platformController->fetchAllPlatforms());
+
+        if (file_exists("platforms.json")) {
+            echo file_get_contents('platforms.json');
+            return;
+        }
+        echo $data = json_encode($platformController->fetchAllPlatforms());
+        file_put_contents('platforms.json', $data);
     });
 
     $app->get("/platform/:id", function($id) use ($app, $platformController) {
@@ -111,6 +128,9 @@ $app->group('/api', function() use ($app, $userController, $platformController) 
             "host_name" => $hostName,
             "ip_address" => $ipAddress
         ));
+
+        file_put_contents('platforms.json', json_encode($platformController->fetchAllPlatforms()));
+        echo json_encode(array('message'=>"Platform has been created  successfully.."));
     });
 
     $app->put("/platform/:id", function($id) use ($app, $platformController) {
@@ -131,11 +151,16 @@ $app->group('/api', function() use ($app, $userController, $platformController) 
 
         $platformController->updatePlatform($fieldsToUpdate, intval($id));
 
-        echo json_encode("updated successfully");
+        file_put_contents('platforms.json', json_encode($platformController->fetchAllPlatforms()));
+        echo json_encode(array('message'=>"Platform has been updated  successfully.."));
+
     });
 
     $app->delete("/platform/:id", function($id) use ($app, $platformController) {
         $platformController->removePlatform(intval($id));
+
+        file_put_contents('platforms.json', json_encode($platformController->fetchAllPlatforms()));
+        echo json_encode(array('message'=>"Platform has been deleted successfully.."));
     });
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
