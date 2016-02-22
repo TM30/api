@@ -118,15 +118,37 @@ $app->group('/api', function() use ($app, $userController, $platformController) 
     $app->post("/platform", function() use ($app, $platformController) {
         $name = $app->request->post('name');
         $name = filter_var($name, FILTER_SANITIZE_STRING);
-        $hostName = $app->request->post('host_name');
-        $hostName = filter_var($hostName, FILTER_SANITIZE_STRING);
+
+        $bl_gate = $app->request->post('bl_gate');
+        $bl_gate = filter_var($bl_gate, FILTER_VALIDATE_URL);
+
+        $bc_gate = $app->request->post('bc_gate');
+        $bc_gate = filter_var($bc_gate, FILTER_VALIDATE_URL);
+
+        $sev_app = $app->request->post('sev_app');
+        $sev_app = filter_var($sev_app, FILTER_VALIDATE_URL);
+
+        $tech_admin_email = $app->request->post('tech_admin_email');
+        $tech_admin_email = filter_var($tech_admin_email, FILTER_VALIDATE_EMAIL);
+
+        $ops_admin_email = $app->request->post('ops_admin_email');
+        $ops_admin_email = filter_var($ops_admin_email, FILTER_VALIDATE_EMAIL);
+
+        $gen_admin_email = $app->request->post('gen_admin_email');
+        $gen_admin_email = filter_var($gen_admin_email, FILTER_VALIDATE_EMAIL);
+
         $ipAddress = $app->request->post('ip_address');
         $ipAddress = filter_var($ipAddress, FILTER_SANITIZE_STRING);
 
         $platformController->createPlatform(array(
             "name" => $name,
-            "host_name" => $hostName,
-            "ip_address" => $ipAddress
+            "ip_address" => $ipAddress,
+            "bl_gate" => $bl_gate,
+            "bc_gate" => $bc_gate,
+            "sev_app" => $sev_app,
+            "tech_admin_email" => $tech_admin_email,
+            "ops_admin_email" => $ops_admin_email,
+            "gen_admin_email" => $gen_admin_email
         ));
 
         file_put_contents('platforms.json', json_encode($platformController->fetchAllPlatforms()));
@@ -136,18 +158,45 @@ $app->group('/api', function() use ($app, $userController, $platformController) 
     $app->put("/platform/:id", function($id) use ($app, $platformController) {
         $name = $app->request->post('name');
         $name = filter_var($name, FILTER_SANITIZE_STRING);
-        $host_name = $app->request->post('host_name');
-        $host_name = filter_var($host_name, FILTER_SANITIZE_STRING);
-        $ip_address = $app->request->post('ip_address');
-        $ip_address = filter_var($ip_address, FILTER_SANITIZE_STRING);
+
+        $bl_gate = $app->request->post('bl_gate');
+        $bl_gate = filter_var($bl_gate, FILTER_VALIDATE_URL);
+
+        $bc_gate = $app->request->post('bc_gate');
+        $bc_gate = filter_var($bc_gate, FILTER_VALIDATE_URL);
+
+        $sev_app = $app->request->post('sev_app');
+        $sev_app = filter_var($sev_app, FILTER_VALIDATE_URL);
+
+        $tech_admin_email = $app->request->post('tech_admin_email');
+        $tech_admin_email = filter_var($tech_admin_email, FILTER_VALIDATE_EMAIL);
+
+        $ops_admin_email = $app->request->post('ops_admin_email');
+        $ops_admin_email = filter_var($ops_admin_email, FILTER_VALIDATE_EMAIL);
+
+        $gen_admin_email = $app->request->post('gen_admin_email');
+        $gen_admin_email = filter_var($gen_admin_email, FILTER_VALIDATE_EMAIL);
+
+        $ipAddress = $app->request->post('ip_address');
+        $ipAddress = filter_var($ipAddress, FILTER_SANITIZE_STRING);
 
         $fieldsToUpdate = array();
         if($name)
             $fieldsToUpdate['name'] = $name;
-        if($host_name)
-            $fieldsToUpdate['host_name'] = $host_name;
-        if($ip_address)
-            $fieldsToUpdate['ip_address'] = $ip_address;
+        if($bl_gate)
+            $fieldsToUpdate['bl_gate'] = $bl_gate;
+        if($bc_gate)
+            $fieldsToUpdate['bc_gate'] = $bc_gate;
+        if($sev_app)
+            $fieldsToUpdate['sev_app'] = $sev_app;
+        if($tech_admin_email)
+            $fieldsToUpdate['tech_admin_email'] = $tech_admin_email;
+        if($ops_admin_email)
+            $fieldsToUpdate['ops_admin_email'] = $ops_admin_email;
+        if($gen_admin_email)
+            $fieldsToUpdate['gen_admin_email'] = $gen_admin_email;
+        if($ipAddress)
+            $fieldsToUpdate['ip_address'] = $ipAddress;
 
         $platformController->updatePlatform($fieldsToUpdate, intval($id));
 

@@ -59,4 +59,13 @@ class PlatformController
         return $this->platform->findAll();
     }
 
+    /**
+     * This fetch platforms using a
+     * @param $column
+     * @return array
+     */
+    public function fetchAllPlatformsWithColumn($column)
+    {
+        return $this->platform->getPersistenceObject()->customQuery("select $column from platforms");
+    }
 }

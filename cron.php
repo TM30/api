@@ -2,22 +2,18 @@
 
 require 'vendor/autoload.php';
 
-$platforms = array(
-    "freesia1" => "8585",
-    "freesia2" => "8585",
-    "mobility" => "8585",
-    "starfish" => "8585"
-);
+$platforms = new \Controller\PlatformController();
+$platforms = $platforms->fetchAllPlatformsWithColumn("name");
 
 //Counter for number of processes
 $i = 1;
 
-foreach($platforms as $key => $value) {
+foreach($platforms as $platform) {
     $pid = pcntl_fork();
     if ( ! $pid) {
         echo 'starting child ', $i, PHP_EOL;
-        $instance = \Controller\StatusController::getInstance($key, $value);
-        file_put_contents("$key.json", json_encode($instance->resolveModule("sms_c")));
+        $instance = \Controller\StatusController::getInstance($platform->name);
+        file_put_contents("$platform->name.json", json_encode($instance->resolveModule("sms_c")));
         exit();
     }
     $i++;

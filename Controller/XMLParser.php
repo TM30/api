@@ -12,13 +12,5 @@ class XMLParser
             if (!$xml = simplexml_load_string($fileName))
                 throw new \Exception('Something went wrong with api call. Please check!');
             return $xml;
-        /*if(file_exists($fileName)) {
-
-            if (!$xml = simplexml_load_file($fileName)) {
-                return false;
-            }
-            return $xml;
-        }
-        return false;*/
     }
 }
