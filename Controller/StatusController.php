@@ -7,37 +7,31 @@ class StatusController
     private $xmlObject;
     private $platformName;
     private $portNumber;
+    private $moduleName;
 
-    private static $instances = array();
-
-    /**
-     * This returns a singleton o $this class.
-     * @param $platform
-     * @param int $portNumber
-     * @return array
-     */
-    public static function getInstance($platform, $portNumber = 8585)
-    {
-        $uniqueKInstanceRep = $platform.$portNumber;
-        if ( ! array_key_exists($uniqueKInstanceRep, self::$instances)) {
-            self::$instances[$uniqueKInstanceRep] = new self($platform, $portNumber);
-        }
-        return self::$instances[$uniqueKInstanceRep];
-    }
-
-    public function __construct($platformName, $portNumber = 8585)
+    public function __construct($platformName, $portNumber = 8585, $moduleName = "sms_c")
     {
         $this->platformName = $platformName;
         $this->portNumber = $portNumber;
+        $this->moduleName = $moduleName;
+    }
 
-        //$fileName = $platformName.".xml";
-        try {
-            $this->xmlObject = XMLParser::parseXMLFromFile($this->getXML($platformName));
-        } catch(\Exception $e) {
-            //Best point to Handle Connection Time Out issues for tatus
-            $this->getSMSCDown();
-            exit;
+    /**
+     * @return array|bool|string
+     */
+    public function getStatus()
+    {
+        $xmlOutput = $this->getXML($this->platformName);
+        if ($xmlOutput) {
+            try {
+                $this->xmlObject = XMLParser::parseXMLFromFile($this->getXML($this->platformName));
+                return $this->resolveModule($this->moduleName);
+            } catch(\Exception $e) {
+                //Best point to Handle Connection Time Out issues for status
+                return $this->getSMSCDown();
+            }
         }
+        return $this->getSMSCDown();
     }
 
     /**
@@ -361,11 +355,11 @@ class StatusController
             "sms_box" => 0
         );
 
-        echo json_encode(array(
+        return array(
             "gateway_uptime" => 0,
             "total"=>0,
             "smppp_bind"=>array(),
             "modules" => $moduleStatus
-        ));
+        );
     }
 }

@@ -12,8 +12,8 @@ foreach($platforms as $platform) {
     $pid = pcntl_fork();
     if ( ! $pid) {
         echo 'starting child ', $i, PHP_EOL;
-        $result = new \Controller\StatusController($platform->name);
-        file_put_contents("$platform->name.json", json_encode($result));
+        $controllerInstance = new \Controller\StatusController($platform->name);
+        file_put_contents("$platform->name.json", json_encode($controllerInstance->getStatus()));
         exit();
     }
     $i++;

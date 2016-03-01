@@ -216,8 +216,8 @@ $app->group('/api', function() use ($app, $userController, $platformController) 
                                                 //STATUSES
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     $app->get("/status/:platform/:module", function($platformName, $moduleId) use ($app) {
-        $statusController = new \Controller\StatusController($platformName);
-        echo json_encode($statusController->resolveModule($moduleId));
+        $statusController = new \Controller\StatusController($platformName, 8585, $moduleId);
+        echo json_encode($statusController->getStatus());
     });
 
     $app->get("/uptime/:platform", function($platform) use ($app) {
