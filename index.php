@@ -39,12 +39,14 @@ $app->group('/api', function() use ($app, $userController, $platformController) 
     });
 
     $app->get('/user/:id', function($id) use ($app, $userController) {
-        echo json_encode($userController->fetchUser(intval($id))[0]);
+        $user = $userController->fetchUser(intval($id));
+        echo json_encode($user[0]);
     })->conditions(array("id" => "[0-9]+"));
 
     $app->get('/user/:email', function($email) use ($app, $userController) {
         $email = str_replace('%', '.', $email);
-        echo json_encode($userController->fetchUserByMail(($email))[0]->id);
+        $user = $userController->fetchUserByMail(($email));
+        echo json_encode($user[0]->id);
     });
 
     $app->post('/user', function() use ($app, $userController) {
@@ -112,7 +114,8 @@ $app->group('/api', function() use ($app, $userController, $platformController) 
     });
 
     $app->get("/platform/:id", function($id) use ($app, $platformController) {
-        echo json_encode($platformController->fetchPlatforms(intval($id))[0]);
+        $platform = $platformController->fetchPlatforms(intval($id));
+        echo json_encode($platform[0]);
     });
 
     $app->post("/platform", function() use ($app, $platformController) {
