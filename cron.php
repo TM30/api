@@ -13,7 +13,7 @@ foreach($platforms as $platform) {
     if ( ! $pid) {
         echo 'starting child ', $i, PHP_EOL;
         $controllerInstance = new \Controller\StatusController($platform->name);
-        file_put_contents("$platform->name.json", json_encode($controllerInstance->getStatus()));
+        file_put_contents("/var/www/html/demo/seethru/$platform->name.json", json_encode($controllerInstance->getStatus()));
         exit();
     }
     $i++;

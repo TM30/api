@@ -262,6 +262,7 @@ class StatusController
         );
 
         return array(
+            "last_updated" => time(),
             "gateway_uptime" => $this->getGatewayUptime(),
             "total"=>$this->getSMS(),
             "smppp_bind"=>$smscStatus,
@@ -356,6 +357,7 @@ class StatusController
         );
 
         return array(
+            "last_updated" => time(),
             "gateway_uptime" => 0,
             "total"=>0,
             "smppp_bind"=>array(),
